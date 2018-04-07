@@ -20,8 +20,17 @@ def status_of_sections():
 
 @app.route("/api/section_statistics", methods=['POST'])
 def section_statistics():
-
-    return jsonify(sample_section_statistics)
+    section_id = request.values.get("id_section")
+    readfile = open("/current_datalist/"+section_id+".csv", "r").readlines()
+    timestamps = [i[0] for i in readfile]
+    consumption_return = [i[1] for i in readfile]
+    consumption_supply = [i[2] for i in readfile]
+    pressure_return = [i[3] for i in readfile]
+    pressure_supply = [i[4] for i in readfile]
+    temp_return = [i[5] for i in readfile]
+    temp_supply = [i[6] for i in readfile]
+    statistics = [[timestamps, temp_supply], [timestamps, temp_return], [timestamps, pressure_supply], [timestamps, pressure_return], [timestamps, consumption_supply], [timestamps, consumption_return]]
+    return jsonify(statistics)
 
 @app.route("/api/history", methods=['POST'])
 def history():
@@ -37,6 +46,7 @@ def set_data():
     readfile = open("current_dataset/"+section_id+".csv", "r")
     if file_len("current_dataset/"+section_id+".csv") == 60:
         rendfile = open("current_dataset/"+section_id+".csv", "w")
+        readfile.readline()
         readfile.readline()
         for i in range(59):
             write(readfile.readline)
