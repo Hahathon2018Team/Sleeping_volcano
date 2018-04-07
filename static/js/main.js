@@ -7,7 +7,7 @@ $(function() {
 function history(event) {
     event.preventDefault();
     $.post("/api/history",{},function(data,status) {
-        output_html = "<h3>Участки сети</h3><div class='row'><div class='col-12'><input id='search' class='form-control w-100' placeholder='Search' aria-label='Search' type='text'></div></div>\
+        output_html = "<h3>История оповещений</h3><div class='row'><div class='col-12'><input id='search' class='form-control w-100' placeholder='Search' aria-label='Search' type='text'></div></div>\
         <div class='table-responsive'>\
             <table class='table table-striped table-sm'>\
                 <thead>\
@@ -27,6 +27,7 @@ function history(event) {
 
         $("#search").on("keyup", function() {
             var value = $(this).val().toLowerCase();
+            console.log(value);
             $("#tbody tr").filter(function() {
               $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
