@@ -115,8 +115,9 @@ body {
   height: 100%;
    margin-left:0;
    margin-right:0;
-}
-.content {
   padding-top: 1em;
-  padding-right: 2em;
+}
+
+.table-responsive {
+  margin-top: 1em;
 }
