@@ -28,6 +28,10 @@ def history():
 def external_statistics():
     return jsonify(sample_external_statistics)
 
+@app.route("/api/set_data", methods=['POST'])
+def set_data():
+    return "OK"
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
