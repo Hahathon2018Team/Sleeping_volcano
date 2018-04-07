@@ -24,6 +24,13 @@ function history(event) {
         });
         output_html += "</tbody></table></div>";
         $(".main").html(output_html);
+
+        $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbody tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
     });
 }
 
@@ -49,6 +56,14 @@ function sections(event) {
         $(".main").html(output_html);
 
         $(".info").click(info);
+
+        $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tbody tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        feather.replace();
     });
 }
 
@@ -57,7 +72,9 @@ function info() {
     $.post("/api/section_statistics", {section_id:section_id_}, function (data,status) {
         output_html = "<button class='btn btn-sm' id='prev'><span data-feather='arrow-left'><span><button>";
         console.log(data)
+        $(".main").html(output_html);
         $("#prev").click(sections);
+        feather.replace();
     });
 }
 
