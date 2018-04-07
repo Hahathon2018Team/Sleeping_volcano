@@ -18,12 +18,7 @@
 
   <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Library Help Bot</a>
-      <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/signout">Sign out</a>
-        </li>
-      </ul>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/"><img src="{{ url_for('static',filename='img/sleeping_volcano_icon.svg')}}">Sleeping Volcano</a>
     </nav>
 
     <div class="container-fluid">
@@ -32,33 +27,21 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" href="#" id="dashboard">
-                  <span data-feather="home"></span>
-                  Dashboard
+                <a class="nav-link" href="#" id="history">
+                  <span data-feather="calendar"></span>
+                  История оповещений
                 </a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="#" id="users">
-                    <span data-feather="users"></span>
-                    Users
+                  <a class="nav-link" href="#" id="sections">
+                    <span data-feather="git_commit"></span>
+                    Участки сети
                   </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="documents">
-                  <span data-feather="book"></span>
-                  Documents
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="orders">
-                  <span data-feather="book-open"></span>
-                  Orders
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="history">
-                  <span data-feather="archive"></span>
-                  History
+                <a class="nav-link" href="#" id="external_statistics">
+                  <span data-feather="cloud"></span>
+                  Внешняя стотистика
                 </a>
               </li>
             </ul>
@@ -83,6 +66,6 @@
     <script>
       feather.replace()
     </script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </body>
 </html>
