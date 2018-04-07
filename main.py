@@ -1,5 +1,6 @@
-from flask import Flask,send_from_directory, url_for, jsonify
+from flask import Flask, send_from_directory, url_for, jsonify, render_template, request
 import os
+import json
 app = Flask(__name__, static_url_path='')
 
 sample_status_of_sections = [["88942", "OK"], ["89336", "CRASH"], ["88745", "DANGER"]]
@@ -9,7 +10,7 @@ sample_external_statistics = [[["2018-04-07 21:19:00", "180"], ["2018-04-07 21:2
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template('index.html')
 
 @app.route("/api/status_of_sections", methods=['POST'])
 def status_of_sections():
