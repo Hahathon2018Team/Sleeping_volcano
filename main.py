@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, url_for, jsonify, render_template, request
 import os
 import json
-from utils.py import convert_to_date_time, file_len
+from utils import convert_to_date_time, file_len
 app = Flask(__name__, static_url_path='')
 
 sample_status_of_sections = [["88942", "OK"], ["89336", "CRASH"], ["88745", "DANGER"]]
