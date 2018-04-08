@@ -4,7 +4,6 @@ import json
 from utils import convert_to_date_time, file_len
 app = Flask(__name__, static_url_path='')
 
-sample_status_of_sections = [["89793", "OK"], ["89336", "CRASH"], ["89808", "DANGER"]]
 ids = ["88942", "89336", "89520", "89589", "89600", "89604", "89639", "89655", "89667", "89709", "89726", "89730", "89731", "89751", "89758", "89760", "89781", "89783", "89788", "89791", "89792", "89793", "89806", "89808", "89815"]
 
 @app.route("/")
@@ -44,7 +43,7 @@ def section_statistics():
 
 @app.route("/api/history", methods=['POST'])
 def history():
-    return jsonify(sample_history)
+    return jsonify([])
 
 @app.route("/api/external_statistics", methods=['POST'])
 def external_statistics():
