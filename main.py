@@ -50,6 +50,18 @@ def history():
 
 @app.route("/api/external_statistics", methods=['POST'])
 def external_statistics():
+    readfile = open("current_dataset/weatheer.csv", "r").readlines()
+    timestamps = []
+    return_temp = []
+    supply_temp = []
+    temperature = []
+    for line in readfile: 
+        line = [i for i in line.split(',')]
+        timestamps += [line[0]]
+        return_temp += [line[1]]
+        supply_temp += [line[2]]
+        temperature += [line[3]]
+    statistics = [[timestamps, temperature], [timestamps, supply_temp], [timestamps, return_temp]]
     return jsonify(sample_external_statistics)
 
 @app.route("/api/set_data", methods=['POST'])
