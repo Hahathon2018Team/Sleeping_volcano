@@ -4,10 +4,9 @@ import json
 from utils import convert_to_date_time, file_len
 app = Flask(__name__, static_url_path='')
 
-sample_status_of_sections = [["88942", "OK"], ["89336", "CRASH"], ["88745", "DANGER"]]
-sample_section_statistics = [[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["180", "190", "180"]],[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["200", "170", "190"]],[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["60", "70", "80"]],[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["70", "50", "90"]],[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["3", "3", "2"]],[["2018-04-07 21:19:00", "2018-04-07 21:20:00", "2018-04-07 21:21:00"],["4", "5", "2"]]]
-#sample_section_statistics = [[] for i in [[["2018-04-07 21:19:00", "180"], ["2018-04-07 21:20:00", "190"], ["2018-04-07 21:21:00", "180"]],[["2018-04-07 21:19:00", "200"], ["2018-04-07 21:20:00", "170"], ["2018-04-07 21:21:00", "190"]],[["2018-04-07 21:19:00", "60"], ["2018-04-07 21:20:00", "70"], ["2018-04-07 21:21:00", "80"]],[["2018-04-07 21:19:00", "70"], ["2018-04-07 21:20:00", "50"], ["2018-04-07 21:21:00", "90"]],[["2018-04-07 21:19:00", "3"], ["2018-04-07 21:20:00", "3"], ["2018-04-07 21:21:00", "2"]],[["2018-04-07 21:19:00", "4"], ["2018-04-07 21:20:00", "5"], ["2018-04-07 21:21:00", "2"]]]]
-sample_history = [["2018-03-15 20:00:00", "88942", "DANGER"], ["2018-03-30", "89745", "DANGER"]]
+sample_status_of_sections = [["89793", "OK"], ["89336", "CRASH"], ["89808", "DANGER"]]
+ids = ["88942", "89336", "89520", "89589", "89600", "89604", "89639", "89655", "89667", "89709", "89726", "89730", "89731", "89751", "89758", "89760", "89781", "89783", "89788", "89791", "89792", "89793", "89806", "89808", "89815"]
+sample_history = [["2018-03-15 20:00:00", "89793", "DANGER"], ["2018-03-30", "89745", "DANGER"]]
 sample_external_statistics = [[["2018-04-07 21:19:00", "180"], ["2018-04-07 21:20:00", "190"], ["2018-04-07 21:21:00", "180"]], [["2018-04-07 21:19:00", "180"], ["2018-04-07 21:20:00", "190"], ["2018-04-07 21:21:00", "180"]], [["2018-04-07 21:19:00", "27"], ["2018-04-07 21:20:00", "28"], ["2018-04-07 21:21:00", "28"]]]
 
 @app.route("/")
@@ -16,19 +15,32 @@ def hello():
 
 @app.route("/api/status_of_sections", methods=['POST'])
 def status_of_sections():
-    return jsonify(sample_status_of_sections)
+    sections_statuses = []
+    for i in ids:
+        sections_statuses += [[i, "OK"]]
+    print(sections_statuses)
+    return jsonify(sections_statuses)
 
 @app.route("/api/section_statistics", methods=['POST'])
 def section_statistics():
-    section_id = request.values.get("id_section")
-    readfile = open("/current_datalist/"+section_id+".csv", "r").readlines()
-    timestamps = [i[0] for i in readfile]
-    consumption_return = [i[1] for i in readfile]
-    consumption_supply = [i[2] for i in readfile]
-    pressure_return = [i[3] for i in readfile]
-    pressure_supply = [i[4] for i in readfile]
-    temp_return = [i[5] for i in readfile]
-    temp_supply = [i[6] for i in readfile]
+    section_id = request.values.get("section_id")
+    readfile = open("current_dataset/"+section_id+".csv", "r").readlines()
+    timestamps = []
+    consumption_return = []
+    consumption_supply = []
+    pressure_return = []
+    pressure_supply = []
+    temp_return = []
+    temp_supply = []
+    for line in readfile: 
+        line = [i for i in line.split(',')]
+        timestamps += [line[0]]
+        temp_supply += [line[6]]
+        temp_return += [line[5]]
+        pressure_supply += [line[4]]
+        pressure_return += [line[3]]
+        consumption_supply += [line[2]]
+        consumption_return += [line[1]]
     statistics = [[timestamps, temp_supply], [timestamps, temp_return], [timestamps, pressure_supply], [timestamps, pressure_return], [timestamps, consumption_supply], [timestamps, consumption_return]]
     return jsonify(statistics)
 
@@ -43,19 +55,17 @@ def external_statistics():
 @app.route("/api/set_data", methods=['POST'])
 def set_data():
     section_id = request.values.get("section_id")
-    readfile = open("current_dataset/"+section_id+".csv", "r")
+    file_ = open("current_dataset/"+section_id+".csv")
     if file_len("current_dataset/"+section_id+".csv") == 60:
-        rendfile = open("current_dataset/"+section_id+".csv", "w")
-        readfile.readline()
-        readfile.readline()
+        file_.readline()
         for i in range(59):
-            write(readfile.readline)
-        write(request.values.get("values"))
-        rendfile.close()
+            write(file_.readline())
+        file_.write(request.values.get("values"))
+        file_.close()
     else:
-        rendfile = open("current_dataset/"+section_id+".csv", "a")
-        write(request.values.get("values"))
-        rendfile.close()
+        file_ = open("current_dataset/"+section_id+".csv", "a")
+        file_.write(request.values.get("values"))
+        file_.close()
     return "OK"
 
 @app.route('/favicon.ico')

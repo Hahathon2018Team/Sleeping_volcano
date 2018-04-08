@@ -75,7 +75,7 @@ function info() {
         output_html = "<div class ='row'><div class='col-1'><button class='btn btn-sm' id='prev'><span data-feather='arrow-left'><span></button></div><div class='col-auto offset-2'><h3>"+section_id_+"</h3></div></div>";
         output_html += "<div class='row'><div class='col'><h5>Входная температура</h5><canvas class='my-4 chartjs-render-monitor charts' id='inputTemp' style='display: block;'></canvas></div><div class='col'><h5>Выходная температура</h5><canvas class='my-4 chartjs-render-monitor charts' id='outputTemp' style='display: block;'></canvas></div></div>";
         output_html += "<div class='row'><div class='col'><h5>Входное давление</h5><canvas class='my-4 chartjs-render-monitor charts' id='inputPressure' style='display: block;'></canvas></div><div class='col'><h5>Выходное давление</h5><canvas class='my-4 chartjs-render-monitor charts' id='outputPressure' style='display: block;'></canvas></div></div>";
-        output_html += "<div class='row'><div class='col'><h5>Входной поток</h5><canvas class='my-4 chartjs-render-monitor charts' id='inputFlow' style='display: block;'></canvas></div><div class='col'><h5>Входной поток</h5><canvas class='my-4 chartjs-render-monitor charts' id='outputFlow' style='display: block;'></canvas></div></div>";
+        output_html += "<div class='row'><div class='col'><h5>Входной поток</h5><canvas class='my-4 chartjs-render-monitor charts' id='inputFlow' style='display: block;'></canvas></div><div class='col'><h5>Выходной поток</h5><canvas class='my-4 chartjs-render-monitor charts' id='outputFlow' style='display: block;'></canvas></div></div>";
         $(".main").html(output_html);
         $("#prev").click(sections);
         feather.replace();
