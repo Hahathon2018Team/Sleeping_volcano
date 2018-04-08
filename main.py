@@ -84,7 +84,7 @@ def set_data():
 def calculate_statuses():
     input_data = pd.DataFrame(data, index=ids, columns=params)
     for i in ids:
-        tube = pd.read_csv("current_data/" i + ".csv", index_col='timestamp').iloc[-1]
+        tube = pd.read_csv("current_data/" + i + ".csv", index_col='timestamp').iloc[-1]
         tube.name = i
         input_data.loc[i] = tube
     temp = pd.read_csv("current_data/weather.csv", index_col="timestamp").iloc[-1].loc["temperature"]
