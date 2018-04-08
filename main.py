@@ -1,10 +1,16 @@
 from flask import Flask, send_from_directory, url_for, jsonify, render_template, request
 import os
 import json
+import pickle
+import pandas as pd
 from utils import convert_to_date_time, file_len
 app = Flask(__name__, static_url_path='')
 
 ids = ["88942", "89336", "89520", "89589", "89600", "89604", "89639", "89655", "89667", "89709", "89726", "89730", "89731", "89751", "89758", "89760", "89781", "89783", "89788", "89791", "89792", "89793", "89806", "89808", "89815"]
+params = ["consumption_return", "consumption_supply", "pressure_return", "pressure_supply", "temp_return", "temp_supply"]
+with open('predictor.pickle', 'rb') as f:
+    predictor = pickle.load(f)
+model = predictor("extracted_dataset/")
 
 @app.route("/")
 def hello():
@@ -12,10 +18,8 @@ def hello():
 
 @app.route("/api/status_of_sections", methods=['POST'])
 def status_of_sections():
-    sections_statuses = []
-    for i in ids:
-        sections_statuses += [[i, "OK"]]
-    print(sections_statuses)
+    sections_statuses = calculate_statuses()
+    
     return jsonify(sections_statuses)
 
 @app.route("/api/section_statistics", methods=['POST'])
@@ -77,9 +81,17 @@ def set_data():
         file_.close()
     return "OK"
 
-def calculate_status(section_id):
-    pass
-
+def calculate_statuses():
+    input_data = pd.DataFrame(data, index=ids, columns=params)
+    for i in ids:
+        tube = pd.read_csv("current_data/" i + ".csv", index_col='timestamp').iloc[-1]
+        tube.name = i
+        input_data.loc[i] = tube
+    temp = pd.read_csv("current_data/weather.csv", index_col="timestamp").iloc[-1].loc["temperature"]
+    
+    return zip(ids, model.get_request(input_data, temp))
+    
+    
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
