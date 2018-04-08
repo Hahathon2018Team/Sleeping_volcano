@@ -104,6 +104,5 @@ ENV/
 .mypy_cache/
 
 smart_heating_dataset/
-extracted_dataset/
 current_dataset/
 clear.sh
