@@ -77,12 +77,15 @@ def set_data():
         file_.close()
     return "OK"
 
+def calculate_status(section_id):
+    pass
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 def main():
-    app.run()
+    app.run(host="94.250.253.199")
 
 if __name__ == '__main__':
     main()
