@@ -1,5 +1,5 @@
 rm -rf current_dataset/
 cp -R --attributes-only extracted_dataset/  current_dataset/
-python main.py &
-python script.py
+python3 main.py &
+python3 script.py
 wait
