@@ -32,8 +32,8 @@ def section_statistics():
     pressure_supply = []
     temp_return = []
     temp_supply = []
-    for line in readfile: 
-        line = [i for i in line.split(',')]
+    for line in readfile:
+        line = line.split(',')
         timestamps += [line[0]]
         temp_supply += [line[6]]
         temp_return += [line[5]]
@@ -50,19 +50,19 @@ def history():
 
 @app.route("/api/external_statistics", methods=['POST'])
 def external_statistics():
-    readfile = open("current_dataset/weatheer.csv", "r").readlines()
+    readfile = open("current_dataset/weather.csv", "r").readlines()
     timestamps = []
     return_temp = []
     supply_temp = []
     temperature = []
     for line in readfile: 
-        line = [i for i in line.split(',')]
+        line = line.split(',')
         timestamps += [line[0]]
         return_temp += [line[1]]
         supply_temp += [line[2]]
         temperature += [line[3]]
     statistics = [[timestamps, temperature], [timestamps, supply_temp], [timestamps, return_temp]]
-    return jsonify(sample_external_statistics)
+    return jsonify(statistics)
 
 @app.route("/api/set_data", methods=['POST'])
 def set_data():

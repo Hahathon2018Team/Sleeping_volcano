@@ -2,6 +2,7 @@ $(function() {
     $("#history").click(history);
     $("#sections").click(sections);
     $("#external_statistics").click(external_statistics);
+    history(new Event("sample",null));
 });
 
 function history(event) {
@@ -247,4 +248,94 @@ function info() {
 
 function external_statistics(event) {
     event.preventDefault();
+    $.post("/api/external_statistics", {}, function (data,status) {
+        console.log(data);
+        output_html = "<div class ='row'><div class='col-auto offset-2'><h3>"+"Внешняя статистика"+"</h3></div></div>";
+        output_html += "<div class='row'><div class='col'><h5>Внешняя температура</h5><canvas class='my-4 chartjs-render-monitor charts' id='externalTemp' style='display: block;'></canvas></div></div>";
+        output_html += "<div class='row'><div class='col'><h5>Входная температура</h5><canvas class='my-4 chartjs-render-monitor charts' id='inputTemp' style='display: block;'></canvas></div></div>";
+        output_html += "<div class='row'><div class='col'><h5>Выходная температура</h5><canvas class='my-4 chartjs-render-monitor charts' id='outputTemp' style='display: block;'></canvas></div></div>";
+        $(".main").html(output_html);
+        feather.replace();
+        var ctxExternalTemp = document.getElementById("externalTemp");
+        var inputTemp = new Chart(ctxExternalTemp, {
+            type: 'line',
+            data: {
+            labels: data[0][0],
+            datasets: [{
+                data: data[0][1],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+            },
+            options: {
+            scales: {
+                yAxes: [{
+                ticks: {
+                    beginAtZero: false
+                }
+                }]
+            },
+            legend: {
+                display: false,
+            }
+            }
+        });
+        var ctxInputTemp = document.getElementById("inputTemp");
+        var inputTemp = new Chart(ctxInputTemp, {
+            type: 'line',
+            data: {
+            labels: data[1][0],
+            datasets: [{
+                data: data[1][1],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+            },
+            options: {
+            scales: {
+                yAxes: [{
+                ticks: {
+                    beginAtZero: false
+                }
+                }]
+            },
+            legend: {
+                display: false,
+            }
+            }
+        });
+        var ctxOutputTemp = document.getElementById("outputTemp");
+        var inputTemp = new Chart(ctxOutputTemp, {
+            type: 'line',
+            data: {
+            labels: data[2][0],
+            datasets: [{
+                data: data[2][1],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+            },
+            options: {
+            scales: {
+                yAxes: [{
+                ticks: {
+                    beginAtZero: false
+                }
+                }]
+            },
+            legend: {
+                display: false,
+            }
+            }
+        });
+    });
 }
